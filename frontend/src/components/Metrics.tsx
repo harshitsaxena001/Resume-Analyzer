@@ -1,4 +1,3 @@
-import React from 'react';
 import './Metrics.css';
 
 export default function Metrics() {
