@@ -1,0 +1,80 @@
+.site-navbar {
+  background-color: var(--bg-cream);
+  padding: 1.5rem 0;
+  position: relative;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left, .nav-center, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-left {
+  flex: 1;
+}
+
+.nav-center {
+  flex: 2;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.nav-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.nav-center a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s;
+}
+
+.nav-center a:hover {
+  opacity: 0.6;
+}
+
+.nav-text-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.nav-text-btn:hover {
+  text-decoration: underline;
+}
+
+.auth-controls, .user-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
