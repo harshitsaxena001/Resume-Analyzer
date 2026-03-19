@@ -23,6 +23,13 @@ class Settings(BaseSettings):
     # Storage
     UPLOAD_DIR: str = "./uploads"
 
+    # CORS Settings
+    CORS_ORIGINS: list[str] = [
+        "https://resume-analyzer-iota-murex.vercel.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+    ]               
+
     class Config:
         env_file = ".env"
         extra = "ignore"

@@ -10,11 +10,7 @@ app = FastAPI(
 )
 
 # Configure CORS
-origins = [
-    "http://localhost:5173", # Vite default
-    "http://localhost:3000",
-    "*" # For development
-]
+origins = settings.CORS_ORIGINS
 
 app.add_middleware(
     CORSMiddleware,
