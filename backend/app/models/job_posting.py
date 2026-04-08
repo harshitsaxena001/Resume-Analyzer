@@ -24,7 +24,6 @@ class JobPosting(Base):
     # Relationships
     company = relationship("Company", back_populates="job_postings")
     job_skills = relationship("JobSkill", back_populates="job_posting", cascade="all, delete-orphan")
-    match_scores = relationship("MatchScore", back_populates="job_posting", cascade="all, delete-orphan")
     applications = relationship("Application", back_populates="job_posting", cascade="all, delete-orphan")
 
 class JobSkill(Base):

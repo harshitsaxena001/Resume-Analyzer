@@ -24,7 +24,6 @@ class Resume(Base):
     # Relationships
     user = relationship("User", back_populates="resumes")
     resume_skills = relationship("ResumeSkill", back_populates="resume", cascade="all, delete-orphan")
-    match_scores = relationship("MatchScore", back_populates="resume", cascade="all, delete-orphan")
     applications = relationship("Application", back_populates="resume", cascade="all, delete-orphan")
 
 

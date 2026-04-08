@@ -24,7 +24,10 @@ async def upload_resume(
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"Resume upload error: {error_trace}")
+        raise HTTPException(status_code=500, detail=f"Resume upload failed: {str(e)}")
 
 @router.get("/{resume_id}", response_model=ResumeResponse)
 async def get_resume(

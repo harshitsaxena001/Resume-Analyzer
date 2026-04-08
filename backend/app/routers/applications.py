@@ -16,7 +16,16 @@ async def apply_to_job(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return await application_service.create_application(db, current_user.user_id, app_data)
+    db_app, error_code = await application_service.create_application(db, current_user.user_id, app_data)
+
+    if error_code == "job_not_found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    if error_code == "already_applied":
+        raise HTTPException(status_code=409, detail="You have already applied to this job")
+    if error_code == "invalid_resume":
+        raise HTTPException(status_code=400, detail="Selected resume is invalid")
+
+    return db_app
 
 @router.get("/user/{user_id}", response_model=List[ApplicationResponse])
 async def get_user_applications(

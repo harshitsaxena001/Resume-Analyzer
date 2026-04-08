@@ -1,6 +1,27 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Any
 from datetime import datetime
+
+class CompanyMatch(BaseModel):
+    company_id: int
+    name: str
+    logo_url: Optional[str] = None
+    website: Optional[str] = None
+    class Config:
+        from_attributes = True
+
+class SkillBase(BaseModel):
+    skill_id: int
+    name: str
+    class Config:
+        from_attributes = True
+
+class JobSkillBase(BaseModel):
+    id: int
+    is_required: bool
+    skill: SkillBase
+    class Config:
+        from_attributes = True
 
 class JobBase(BaseModel):
     title: str
@@ -22,6 +43,9 @@ class JobResponse(JobBase):
     company_id: Optional[int]
     posted_at: datetime
     expires_at: Optional[datetime]
+    company: Optional[CompanyMatch] = None
+    job_skills: List[JobSkillBase] = []
+    
     
     class Config:
         from_attributes = True

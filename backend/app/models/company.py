@@ -8,6 +8,7 @@ class Company(Base):
     company_id = Column(Integer, primary_key=True, index=True)
     recruiter_id = Column(Integer, ForeignKey("users.user_id", ondelete="SET NULL"), nullable=True)
     name = Column(String(150), nullable=False)
+    logo_url = Column(String(500))
     industry = Column(String(100))
     location = Column(String(100))
     website = Column(String(255))
