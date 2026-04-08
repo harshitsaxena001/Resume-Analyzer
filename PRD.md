@@ -1,8 +1,9 @@
 # Product Requirements Document (PRD)
+
 ## AI Resume Analyser & Job Recommendation System
 
 **Version:** 1.0  
-**Stack:** FastAPI · NeonDB (PostgreSQL) · Python · React (Frontend)  
+**Stack:** FastAPI · NeonDB (PostgreSQL) · Python · React (Frontend TypeScript)  
 **Project Type:** DBMS Academic Project  
 **Date:** March 2026
 
@@ -37,12 +38,87 @@ This project demonstrates advanced DBMS concepts including relational schema des
 ## 2. Goals & Objectives
 
 ### Primary Goals
+
+- Parse and analyse resumes using AI (Google Gemini API)
+- Match job seekers to relevant job postings using a dynamic scoring algorithm
+- Provide skill-gap analysis and improvement suggestions
+- Showcase DBMS concepts: normalisation, joins, indexing, views, triggers
+
+### Academic DBMS Concepts Demonstrated
+
+- Entity-Relationship (ER) modelling with 8 tables
+- 3NF-normalised schema design
+- Complex multi-table JOINs in recommendation queries
+- Full-text search using PostgreSQL `tsvector` / `tsquery`
+- Database views for resume skill summaries
+- Indexes on high-query columns (skills, job_title, user_id)
+- Transactions for atomic resume upload + parsing operations
+
+---
+
+## 3. Tech Stack
+
+| Layer             | Technology                                                       |
+| ----------------- | ---------------------------------------------------------------- |
+| Backend Framework | FastAPI (Python 3.11+)                                           |
+| Database          | NeonDB (Serverless PostgreSQL)                                   |
+| ORM               | SQLAlchemy 2.0 (async) + asyncpg driver                          |
+| AI / NLP          | Google Gemini API (`google-genai`) for resume parsing & analysis |
+| Resume Parsing    | PyMuPDF / pdfplumber (PDF extraction)                            |
+| Auth              | JWT (python-jose) + bcrypt password hashing                      |
+| File Storage      | Local `/uploads` dir                                             |
+| Frontend          | React 19 + Vite + TypeScript + Custom CSS                        |
+| HTTP Client       | Axios                                                            |
+| Deployment        | Render / Railway (backend) + Vercel (frontend)                   |
+
+---
+
+## 4. System Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                        FRONTEND                          │
+│         React + Vite + TypeScript + Custom CSS           │
+│   (Auth, Resume Upload, Dashboard, Job Listings)         │
+└─────────────────┬───────────────────────────────────────┘
+                  │ HTTP / REST (Axios)
+                  ▼
+┌─────────────────────────────────────────────────────────┐
+│                     BACKEND (FastAPI)                    │
+│                                                          │
+│  ┌────────────┐  ┌────────────┐  ┌────────────────────┐ │
+│  │ Auth Router│  │Resume Router│  │  Jobs Router       │ │
+│  └────────────┘  └─────┬──────┘  └────────────────────┘ │
+│                        │                                 │
+│              ┌─────────▼──────────┐                      │
+│              │   AI Service       │                      │
+│              │  (Gemini API)      │                      │
+│              │  Resume Parsing    │                      │
+│              │  Skill Extraction  │                      │
+│              └─────────┬──────────┘                      │
+│                        │                                 │
+│              ┌─────────▼─────────┐                       │
+│              │  Match Service    │                       │
+│              │  Dynamic Scoring  │                       │
+│              └─────────┬─────────┘                       │
+│                        │                                 │
+│              ┌─────────▼──────────┐                      │
+│              │  SQLAlchemy ORM    │                      │
+│              └─────────┬──────────┘                      │
+└────────────────────────┼────────────────────────────────┘
+```
+
+oldString: ```text
+
+### Primary Goals
+
 - Parse and analyse resumes using AI (Claude API or similar)
 - Match job seekers to relevant job postings using a scoring algorithm
 - Provide skill-gap analysis and improvement suggestions
 - Showcase DBMS concepts: normalisation, joins, indexing, views, triggers
 
 ### Academic DBMS Concepts Demonstrated
+
 - Entity-Relationship (ER) modelling with 8+ tables
 - 3NF-normalised schema design
 - Complex multi-table JOINs in recommendation queries
@@ -56,18 +132,18 @@ This project demonstrates advanced DBMS concepts including relational schema des
 
 ## 3. Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend Framework | FastAPI (Python 3.11+) |
-| Database | NeonDB (Serverless PostgreSQL) |
-| ORM | SQLAlchemy 2.0 (async) + asyncpg driver |
-| AI / NLP | Claude API (Anthropic) for resume parsing & analysis |
-| Resume Parsing | PyMuPDF / pdfplumber (PDF extraction) |
-| Auth | JWT (python-jose) + bcrypt password hashing |
-| File Storage | Local `/uploads` dir (or Cloudinary for production) |
-| Frontend | React + Vite + TailwindCSS |
-| HTTP Client | Axios |
-| Deployment | Render / Railway (backend) + Vercel (frontend) |
+| Layer             | Technology                                           |
+| ----------------- | ---------------------------------------------------- |
+| Backend Framework | FastAPI (Python 3.11+)                               |
+| Database          | NeonDB (Serverless PostgreSQL)                       |
+| ORM               | SQLAlchemy 2.0 (async) + asyncpg driver              |
+| AI / NLP          | Claude API (Anthropic) for resume parsing & analysis |
+| Resume Parsing    | PyMuPDF / pdfplumber (PDF extraction)                |
+| Auth              | JWT (python-jose) + bcrypt password hashing          |
+| File Storage      | Local `/uploads` dir (or Cloudinary for production)  |
+| Frontend          | React + Vite + TailwindCSS                           |
+| HTTP Client       | Axios                                                |
+| Deployment        | Render / Railway (backend) + Vercel (frontend)       |
 
 ---
 
@@ -100,14 +176,18 @@ This project demonstrates advanced DBMS concepts including relational schema des
 │              │  SQLAlchemy ORM    │                      │
 │              └─────────┬──────────┘                      │
 └────────────────────────┼────────────────────────────────┘
+```
+
                          │ asyncpg
                          ▼
+
 ┌─────────────────────────────────────────────────────────┐
-│                  NeonDB (PostgreSQL)                     │
-│                                                          │
-│  users · resumes · skills · job_postings · matches       │
-│  applications · companies · resume_skills · job_skills   │
+│ NeonDB (PostgreSQL) │
+│ │
+│ users · resumes · skills · job_postings │
+│ applications · companies · resume_skills · job_skills │
 └─────────────────────────────────────────────────────────┘
+
 ```
 
 ---
@@ -116,17 +196,17 @@ This project demonstrates advanced DBMS concepts including relational schema des
 
 ### 5.1 Entity-Relationship Overview
 
-The database has **9 core tables** in 3NF:
+The database has **8 core tables** in 3NF:
 
 ```
+
 users ──< resumes ──< resume_skills >── skills
-  │                                      │
-  └──< applications >── job_postings ──<─┘
-                           │          job_skills
-                        companies
-                           │
-                     match_scores (resume ↔ job)
-```
+│ │
+└──< applications >── job_postings ──<─┘
+│ job_skills
+companies
+
+````
 
 ---
 
@@ -221,19 +301,7 @@ CREATE TABLE job_skills (
     UNIQUE(job_id, skill_id)
 );
 
--- 8. MATCH_SCORES (pre-computed resume ↔ job match)
-CREATE TABLE match_scores (
-    match_id       SERIAL PRIMARY KEY,
-    resume_id      INTEGER NOT NULL REFERENCES resumes(resume_id) ON DELETE CASCADE,
-    job_id         INTEGER NOT NULL REFERENCES job_postings(job_id) ON DELETE CASCADE,
-    score          NUMERIC(5,2),     -- 0.00 to 100.00
-    matched_skills JSONB,            -- list of matched skill names
-    missing_skills JSONB,            -- list of missing required skills
-    computed_at    TIMESTAMP DEFAULT NOW(),
-    UNIQUE(resume_id, job_id)
-);
-
--- 9. APPLICATIONS
+-- 8. APPLICATIONS
 CREATE TABLE applications (
     application_id SERIAL PRIMARY KEY,
     user_id        INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
@@ -245,7 +313,7 @@ CREATE TABLE applications (
     updated_at     TIMESTAMP DEFAULT NOW(),
     UNIQUE(user_id, job_id)
 );
-```
+````
 
 ---
 
@@ -260,8 +328,6 @@ CREATE INDEX idx_jobs_search      ON job_postings   USING GIN (search_vector);
 CREATE INDEX idx_resume_skills_resume ON resume_skills (resume_id);
 CREATE INDEX idx_resume_skills_skill  ON resume_skills (skill_id);
 CREATE INDEX idx_job_skills_job       ON job_skills    (job_id);
-CREATE INDEX idx_match_resume         ON match_scores  (resume_id);
-CREATE INDEX idx_match_score          ON match_scores  (score DESC);
 CREATE INDEX idx_applications_user    ON applications  (user_id);
 CREATE INDEX idx_jobs_active          ON job_postings  (is_active) WHERE is_active = TRUE;
 ```
@@ -271,22 +337,6 @@ CREATE INDEX idx_jobs_active          ON job_postings  (is_active) WHERE is_acti
 ### 5.4 Views
 
 ```sql
--- Top job matches per resume
-CREATE VIEW vw_top_matches AS
-SELECT
-    ms.resume_id,
-    ms.job_id,
-    jp.title,
-    c.name AS company,
-    ms.score,
-    ms.matched_skills,
-    ms.missing_skills
-FROM match_scores ms
-JOIN job_postings jp ON ms.job_id = jp.job_id
-JOIN companies    c  ON jp.company_id = c.company_id
-WHERE jp.is_active = TRUE
-ORDER BY ms.score DESC;
-
 -- Resume skill summary
 CREATE VIEW vw_resume_skill_summary AS
 SELECT
@@ -349,7 +399,6 @@ ai-resume-analyser/
 │   │   │   ├── resume.py
 │   │   │   ├── skill.py
 │   │   │   ├── job_posting.py
-│   │   │   ├── match_score.py
 │   │   │   └── application.py
 │   │   │
 │   │   ├── schemas/                # Pydantic request/response schemas
@@ -362,20 +411,19 @@ ai-resume-analyser/
 │   │   │   ├── auth.py             # /auth/register, /auth/login
 │   │   │   ├── resume.py           # /resume/upload, /resume/{id}
 │   │   │   ├── jobs.py             # /jobs/, /jobs/{id}, /jobs/post
-│   │   │   ├── recommendations.py  # /recommendations/{resume_id}
+│   │   │   ├── recommendations.py  # /recommendations/user/me
 │   │   │   └── applications.py     # /apply, /applications
 │   │   │
 │   │   ├── services/               # Business logic
 │   │   │   ├── auth_service.py     # JWT, password hashing
 │   │   │   ├── resume_service.py   # PDF extraction, DB save
-│   │   │   ├── ai_service.py       # Claude API calls
-│   │   │   ├── match_service.py    # Scoring algorithm
+│   │   │   ├── ai_service.py       # Gemini API calls
+│   │   │   ├── match_service.py    # Dynamic Scoring algorithm
 │   │   │   └── skill_service.py    # Skill normalisation
 │   │   │
 │   │   ├── utils/
 │   │   │   ├── pdf_parser.py       # pdfplumber / PyMuPDF
-│   │   │   ├── jwt_handler.py
-│   │   │   └── file_handler.py
+│   │   │   └── jwt_handler.py
 │   │   │
 │   │   └── middleware/
 │   │       └── auth_middleware.py  # JWT dependency
@@ -386,36 +434,32 @@ ai-resume-analyser/
 │
 ├── frontend/
 │   ├── index.html
-│   ├── vite.config.js
+│   ├── vite.config.ts
 │   ├── package.json
+│   ├── tsconfig.json
 │   │
 │   └── src/
-│       ├── main.jsx
-│       ├── App.jsx
+│       ├── main.tsx
+│       ├── App.tsx
+│       ├── index.css
 │       │
 │       ├── pages/
-│       │   ├── Landing.jsx
-│       │   ├── Login.jsx
-│       │   ├── Register.jsx
-│       │   ├── Dashboard.jsx       # Resume score + top matches
-│       │   ├── UploadResume.jsx
-│       │   ├── JobListings.jsx
-│       │   ├── JobDetail.jsx
-│       │   └── RecruiterPortal.jsx
+│       │   ├── Home.tsx
+│       │   ├── Dashboard.tsx       # Resume metrics + top matched jobs
+│       │   ├── Jobs.tsx            # Job search list
+│       │   └── JobDetails.tsx      # Full job description
 │       │
 │       ├── components/
-│       │   ├── Navbar.jsx
-│       │   ├── ResumeCard.jsx
-│       │   ├── JobCard.jsx
-│       │   ├── SkillBadge.jsx
-│       │   ├── MatchScoreBar.jsx
-│       │   └── SkillGapChart.jsx
+│       │   ├── Navbar.tsx
+│       │   ├── AuthModal.tsx
+│       │   ├── Hero.tsx
+│       │   └── Features.tsx
 │       │
 │       ├── api/
-│       │   └── axios.js            # Axios instance + interceptors
+│       │   └── client.ts           # Axios instance + interceptors
 │       │
-│       └── store/
-│           └── authStore.js        # Zustand / Context for auth state
+│       └── context/
+│           └── AuthContext.tsx     # Context for auth state
 │
 ├── sql/
 │   ├── schema.sql                  # Full table definitions
@@ -431,81 +475,87 @@ ai-resume-analyser/
 ## 7. API Endpoints
 
 ### Auth
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login, returns JWT token |
-| GET | `/auth/me` | Get current user info |
+
+| Method | Endpoint         | Description              |
+| ------ | ---------------- | ------------------------ |
+| POST   | `/auth/register` | Register new user        |
+| POST   | `/auth/login`    | Login, returns JWT token |
+| GET    | `/auth/me`       | Get current user info    |
 
 ### Resume
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/resume/upload` | Upload PDF, trigger AI parse |
-| GET | `/resume/{resume_id}` | Get parsed resume data |
-| GET | `/resume/user/{user_id}` | All resumes of a user |
-| DELETE | `/resume/{resume_id}` | Delete resume |
+
+| Method | Endpoint                 | Description                  |
+| ------ | ------------------------ | ---------------------------- |
+| POST   | `/resume/upload`         | Upload PDF, trigger AI parse |
+| GET    | `/resume/{resume_id}`    | Get parsed resume data       |
+| GET    | `/resume/user/{user_id}` | All resumes of a user        |
+| DELETE | `/resume/{resume_id}`    | Delete resume                |
 
 ### Jobs
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/jobs/` | List all active jobs (paginated) |
-| GET | `/jobs/{job_id}` | Get job details |
-| POST | `/jobs/` | Post a new job (recruiter) |
-| PUT | `/jobs/{job_id}` | Update job listing |
-| DELETE | `/jobs/{job_id}` | Remove job listing |
-| GET | `/jobs/search?q=` | Full-text job search |
+
+| Method | Endpoint          | Description                      |
+| ------ | ----------------- | -------------------------------- |
+| GET    | `/jobs/`          | List all active jobs (paginated) |
+| GET    | `/jobs/{job_id}`  | Get job details                  |
+| POST   | `/jobs/`          | Post a new job (recruiter)       |
+| PUT    | `/jobs/{job_id}`  | Update job listing               |
+| DELETE | `/jobs/{job_id}`  | Remove job listing               |
+| GET    | `/jobs/search?q=` | Full-text job search             |
 
 ### Recommendations
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/recommendations/{resume_id}` | Top N matched jobs for resume |
-| POST | `/recommendations/compute/{resume_id}` | Trigger match score computation |
-| GET | `/recommendations/skill-gap/{resume_id}/{job_id}` | Missing skills for a specific job |
+
+| Method | Endpoint                                          | Description                         |
+| ------ | ------------------------------------------------- | ----------------------------------- |
+| GET    | `/recommendations/user/me`                        | Top N matched jobs for current user |
+| GET    | `/recommendations/skill-gap/{resume_id}/{job_id}` | Missing skills for a specific job   |
 
 ### Applications
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/applications/apply` | Apply to a job |
-| GET | `/applications/user/{user_id}` | All applications by user |
-| GET | `/applications/job/{job_id}` | All applicants for a job (recruiter) |
-| PATCH | `/applications/{app_id}/status` | Update application status |
+
+| Method | Endpoint                        | Description                          |
+| ------ | ------------------------------- | ------------------------------------ |
+| POST   | `/applications/apply`           | Apply to a job                       |
+| GET    | `/applications/user/{user_id}`  | All applications by user             |
+| GET    | `/applications/job/{job_id}`    | All applicants for a job (recruiter) |
+| PATCH  | `/applications/{app_id}/status` | Update application status            |
 
 ---
 
 ## 8. Core Features & Modules
 
 ### 8.1 Resume Upload & Parsing
+
 1. User uploads a PDF file
 2. Backend extracts raw text using `pdfplumber`
-3. Raw text is sent to the Claude API with a structured prompt
-4. Claude returns JSON with: name, email, skills, education, experience, certifications
+3. Raw text is sent to the Gemini API with a structured prompt
+4. Gemini returns JSON with: name, email, skills, education, experience, certifications
 5. Parsed data is stored in `resumes.parsed_json` and skills are inserted into `resume_skills`
 
 ### 8.2 AI Resume Scoring
-- Claude evaluates the resume and returns an `overall_score` (0–100) based on:
+
+- Gemini evaluates the resume and returns an `overall_score` (0–100) based on:
   - Clarity and structure
   - Quantified achievements
   - Keyword richness
   - Completeness
 
-### 8.3 Job Matching Algorithm
-The match score between a resume and a job posting is calculated as:
+### 8.3 Dynamic Job Matching Algorithm
 
-```
-score = (matched_required_skills / total_required_skills) × 70
-      + (experience_match_bonus)                           × 20
-      + (education_match_bonus)                            × 10
-```
+The match score between a resume and a job posting is calculated dynamically during queries based on multiple heuristics:
 
-Stored in `match_scores` table. Recomputed on new resume upload.
+- **Skill Overlap Score:** Partial matching between resume and required job skills.
+- **Experience Match Bonus:** Mapping between job seniority (junior, mid, senior) and candidate's role progression.
+- **Education Match Bonus:** Aligning appropriate degree level to seniority of the role.
+- **Role Category Match:** Categorizing candidates and jobs (e.g. backend, data, frontend) and assigning a heavy mapping weight.
 
 ### 8.4 Skill Gap Analysis
-For a given resume ↔ job pair, the system returns:
+
+For a given resume ↔ job pair in memory, the system dynamically calculates:
+
 - **Matched skills** – skills present in both resume and job
 - **Missing required skills** – must-have skills the user lacks
-- **Missing optional skills** – nice-to-have skills to upskill
 
 ### 8.5 Full-Text Search
+
 Uses PostgreSQL `tsvector` and `GIN` index for fast keyword-based job and resume search:
 
 ```sql
@@ -524,7 +574,7 @@ PDF Upload
 Text Extraction (pdfplumber)
     │
     ▼
-Prompt Engineering → Claude API
+Prompt Engineering → Gemini API
     │  {
     │    "name": "...",
     │    "skills": ["Python", "SQL", ...],
@@ -539,13 +589,11 @@ Skill Normalisation (match to `skills` master table)
 Insert into resumes + resume_skills
     │
     ▼
-Trigger match_score computation against all active jobs
-    │
-    ▼
-Return top-N recommendations to frontend
+Return dynamically computed recommendations using matching algorithm on frontend request
 ```
 
-**Claude Prompt Template (Resume Parsing):**
+**Gemini Prompt Template (Resume Parsing):**
+
 ```
 You are a resume parser. Extract the following from the resume text below and return ONLY valid JSON:
 {
@@ -553,12 +601,12 @@ You are a resume parser. Extract the following from the resume text below and re
   "email": "",
   "phone": "",
   "current_role": "",
-  "experience_years": 0,
+  "experience_years": 0.0,
   "education_level": "",
   "skills": [],
   "work_experience": [{"company": "", "role": "", "duration": ""}],
   "certifications": [],
-  "overall_score": 0
+  "overall_score": 0.0
 }
 Resume Text: {{raw_text}}
 ```
@@ -567,55 +615,54 @@ Resume Text: {{raw_text}}
 
 ## 10. Frontend Pages
 
-| Page | Route | Description |
-|---|---|---|
-| Landing | `/` | Hero section, feature overview, CTA |
-| Register | `/register` | User registration form |
-| Login | `/login` | JWT login form |
-| Dashboard | `/dashboard` | Resume score card, top 5 matched jobs |
-| Upload Resume | `/upload` | Drag-and-drop PDF uploader |
-| Job Listings | `/jobs` | Paginated, searchable job list |
-| Job Detail | `/jobs/:id` | Full job description + Apply button |
-| Skill Gap View | `/gap/:resume_id/:job_id` | Visual skill gap breakdown |
-| Recruiter Portal | `/recruiter` | Post jobs, view applicants |
+| Page        | Route        | Description                                       |
+| ----------- | ------------ | ------------------------------------------------- |
+| Home        | `/`          | Hero section, feature overview, CTA               |
+| Jobs        | `/jobs`      | Paginated, searchable job list                    |
+| Dashboard   | `/dashboard` | Resume metrics and dynamically matched top 5 jobs |
+| Job Details | `/jobs/:id`  | Full job description + Apply button               |
+
+_Note: Auth is handled primarily via an `AuthModal` rather than discrete routing pages._
 
 ---
 
 ## 11. Implementation Roadmap
 
 ### Phase 1 — Database & Backend Foundation (Week 1–2)
-- [ ] Set up NeonDB project, write `schema.sql`
-- [ ] Initialise FastAPI project, connect via asyncpg
-- [ ] Implement SQLAlchemy models for all 9 tables
-- [ ] Set up Alembic migrations
-- [ ] Implement auth routes (register, login, JWT)
+
+- [x] Set up NeonDB project, write `schema.sql`
+- [x] Initialise FastAPI project, connect via asyncpg
+- [x] Implement SQLAlchemy models for all 8 tables
+- [x] Set up Alembic migrations
+- [x] Implement auth routes (register, login, JWT)
 
 ### Phase 2 — Resume Pipeline (Week 2–3)
-- [ ] Build PDF upload endpoint (multipart/form-data)
-- [ ] Integrate pdfplumber for text extraction
-- [ ] Write Claude API integration for resume parsing
-- [ ] Store parsed data + skills in DB
-- [ ] Build resume retrieval endpoints
+
+- [x] Build PDF upload endpoint (multipart/form-data)
+- [x] Integrate pdfplumber for text extraction
+- [x] Write Gemini API integration for resume parsing
+- [x] Store parsed data + skills in DB
+- [x] Build resume retrieval endpoints
 
 ### Phase 3 — Jobs & Matching (Week 3–4)
-- [ ] Seed skills master table + sample jobs
-- [ ] Build job posting CRUD endpoints
-- [ ] Implement match score computation service
-- [ ] Implement skill gap analysis endpoint
-- [ ] Set up full-text search with tsvector
+
+- [x] Seed skills master table + sample jobs
+- [x] Build job posting CRUD endpoints
+- [x] Implement dynamic match scoring logic in memory
+- [x] Integrate full-text search with tsvector
 
 ### Phase 4 — Frontend (Week 4–5)
-- [ ] Scaffold React + Vite project
-- [ ] Implement auth (login/register pages, JWT storage)
-- [ ] Build Resume Upload page with progress indicator
-- [ ] Build Dashboard with score card and match cards
-- [ ] Build Job Listings page with search
-- [ ] Build Skill Gap visualisation (bar chart)
+
+- [x] Scaffold React + Vite + TS project
+- [x] Implement Auth Context and JWT storage
+- [x] Build multi-purpose Auth Modal
+- [x] Build Dashboard with score metrics and match cards
+- [x] Build Job Listings and Job Detail pages
 
 ### Phase 5 — Polish & Demo Prep (Week 5–6)
-- [ ] Add seed data (20 jobs, 10 users, 10 resumes)
-- [ ] Write complex SQL queries for project report
-- [ ] Document ER diagram
+
+- [x] Add seed data (jobs, users, resumes)
+- [x] Wrap up documentation
 - [ ] Final testing and bug fixes
 
 ---
@@ -623,16 +670,18 @@ Resume Text: {{raw_text}}
 ## 12. Environment & Configuration
 
 ### `.env` (backend)
+
 ```env
 DATABASE_URL=postgresql+asyncpg://user:password@ep-xxx.neon.tech/neondb?sslmode=require
 SECRET_KEY=your_jwt_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
-ANTHROPIC_API_KEY=sk-ant-...
+GEMINI_API_KEY=AIzaSy...
 UPLOAD_DIR=./uploads
 ```
 
 ### `requirements.txt`
+
 ```
 fastapi==0.110.0
 uvicorn[standard]==0.29.0
@@ -643,7 +692,7 @@ python-multipart==0.0.9
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 pdfplumber==0.11.0
-anthropic==0.25.0
+google-genai==0.3.0
 pydantic-settings==2.2.1
 python-dotenv==1.0.1
 ```
@@ -652,16 +701,16 @@ python-dotenv==1.0.1
 
 ## 13. Non-Functional Requirements
 
-| Requirement | Target |
-|---|---|
-| API Response Time | < 500ms for non-AI endpoints |
-| Resume Parsing Time | < 10 seconds (AI-dependent) |
-| Database Connections | NeonDB connection pooling (min 2, max 10) |
-| File Upload Size | Max 5MB per resume PDF |
-| Auth Token Expiry | 60 minutes (access token) |
-| Concurrent Users | Support 50 concurrent users (academic scope) |
-| Code Coverage | Core services > 70% unit test coverage |
+| Requirement          | Target                                       |
+| -------------------- | -------------------------------------------- |
+| API Response Time    | < 500ms for non-AI endpoints                 |
+| Resume Parsing Time  | < 10 seconds (Gemini API-dependent)          |
+| Database Connections | NeonDB connection pooling (min 2, max 10)    |
+| File Upload Size     | Max 5MB per resume PDF                       |
+| Auth Token Expiry    | 60 minutes (access token)                    |
+| Concurrent Users     | Support 50 concurrent users (academic scope) |
+| Code Coverage        | Core services > 70% unit test coverage       |
 
 ---
 
-*PRD prepared for academic DBMS project submission. All AI integrations use the Anthropic Claude API. Database hosted on NeonDB (serverless PostgreSQL).*
+_PRD prepared for academic DBMS project submission. All AI integrations use the Google Gemini API. Database hosted on NeonDB (serverless PostgreSQL)._
