@@ -3,6 +3,7 @@ from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func
+from sqlalchemy import desc
 from sqlalchemy.exc import DataError, IntegrityError, SQLAlchemyError
 
 from app.config import settings
@@ -124,7 +125,11 @@ async def get_resume_by_id(db: AsyncSession, resume_id: int):
     return result.scalars().first()
 
 async def get_user_resumes(db: AsyncSession, user_id: int):
-    result = await db.execute(select(Resume).where(Resume.user_id == user_id))
+    result = await db.execute(
+        select(Resume)
+        .where(Resume.user_id == user_id)
+        .order_by(desc(Resume.uploaded_at), desc(Resume.resume_id))
+    )
     return result.scalars().all()
 
 async def delete_resume(db: AsyncSession, resume_id: int):

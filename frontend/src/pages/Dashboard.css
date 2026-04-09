@@ -272,3 +272,41 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .dashboard-shell {
+    padding: 80px 0 2rem;
+  }
+
+  .dashboard-hero,
+  .dashboard-card,
+  .dashboard-recs {
+    padding: 0.9rem;
+  }
+
+  .dashboard-hero h1 {
+    font-size: clamp(1.5rem, 8vw, 2.2rem);
+  }
+
+  .your-skills-container {
+    gap: 1rem;
+  }
+
+  .skill-profile,
+  .skill-list.your-skills {
+    min-width: 100%;
+  }
+
+  .rec-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rec-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-actions .btn-pill {
+    width: 100%;
+  }
+}

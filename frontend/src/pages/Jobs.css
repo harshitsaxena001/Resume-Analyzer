@@ -315,8 +315,10 @@
 
 @media (max-width: 640px) {
   .jobs-container {
+    padding-top: 76px;
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-bottom: 2.5rem;
   }
 
   .jobs-hero {
@@ -328,6 +330,40 @@
   }
 
   .jobs-title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 10vw, 2.4rem);
+  }
+
+  .jobs-subtitle {
+    font-size: 1rem;
+  }
+
+  .jobs-search-shell {
+    border-radius: 14px;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .jobs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .job-title {
+    font-size: 1.2rem;
+  }
+
+  .job-description {
+    min-height: 0;
+  }
+
+  .job-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .jobs-loading,
+  .jobs-error {
+    padding: 2rem 1rem;
+    font-size: 1rem;
   }
 }

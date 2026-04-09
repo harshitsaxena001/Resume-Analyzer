@@ -173,3 +173,38 @@
     margin-top: 3rem;
   }
 }
+
+@media (max-width: 640px) {
+  .hero-section {
+    min-height: auto;
+    padding: 4.5rem 0 1.5rem;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.1rem, 12vw, 2.9rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtext {
+    font-size: 1rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-actions .btn-pill {
+    width: 100%;
+  }
+
+  .score-reveal {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+  }
+
+  .analysis-loader-card {
+    padding: 1rem;
+  }
+}

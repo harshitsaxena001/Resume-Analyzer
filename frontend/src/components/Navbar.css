@@ -1,24 +1,30 @@
 .site-navbar {
   background-color: var(--bg-cream);
   padding: 1.5rem 0;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 100;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .nav-wrapper {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.8rem;
 }
 
-.nav-left, .nav-center, .nav-right {
+.nav-left,
+.nav-center,
+.nav-right {
   display: flex;
   align-items: center;
 }
 
 .nav-left {
   flex: 1;
+  justify-content: space-between;
 }
 
 .nav-center {
@@ -68,7 +74,8 @@
   text-decoration: underline;
 }
 
-.auth-controls, .user-controls {
+.auth-controls,
+.user-controls {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -77,4 +84,107 @@
 .user-name {
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.nav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(26, 28, 27, 0.14);
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text-main);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 960px) {
+  .site-navbar {
+    padding: 1rem 0;
+  }
+
+  .nav-wrapper {
+    align-items: flex-start;
+  }
+
+  .nav-left {
+    width: 100%;
+    flex: 1 0 100%;
+  }
+
+  .nav-logo {
+    font-size: 1.2rem;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-center,
+  .nav-right {
+    flex: 1 0 100%;
+    display: none;
+    border-top: 1px solid rgba(26, 28, 27, 0.08);
+    padding-top: 0.9rem;
+    margin-top: 0.35rem;
+  }
+
+  .nav-center.is-open,
+  .nav-right.is-open {
+    display: flex;
+  }
+
+  .nav-center {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  .nav-center a {
+    font-size: 0.98rem;
+  }
+
+  .nav-right {
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-top: 0.5rem;
+    border-top: none;
+  }
+
+  .auth-controls,
+  .user-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .auth-controls .btn-pill,
+  .user-controls .btn-pill {
+    width: 100%;
+  }
 }

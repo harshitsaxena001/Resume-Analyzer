@@ -11,6 +11,7 @@
   align-items: center;
   z-index: 1000;
   animation: fadeIn 0.2s ease;
+  padding: 1rem;
 }
 
 .modal-content {
@@ -22,6 +23,8 @@
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   border: 1px solid rgba(0,0,0,0.05);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -136,4 +139,25 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 1.3rem 1rem;
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    margin-bottom: 1.3rem;
+  }
+
+  .modal-title {
+    font-size: clamp(1.5rem, 9vw, 2rem);
+    padding-right: 2rem;
+  }
+
+  .close-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
 }

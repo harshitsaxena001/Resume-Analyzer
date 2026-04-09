@@ -66,3 +66,28 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .metrics-section {
+    padding-bottom: 3.5rem;
+  }
+
+  .metric-primary,
+  .metric-card {
+    padding: 1.5rem 1.2rem;
+  }
+
+  .metric-title {
+    font-size: clamp(2rem, 11vw, 2.6rem);
+    margin-bottom: 1rem;
+  }
+
+  .metric-primary p,
+  .metric-card p {
+    font-size: 0.95rem;
+  }
+
+  .icon-wrapper {
+    margin-bottom: 1.2rem;
+  }
+}

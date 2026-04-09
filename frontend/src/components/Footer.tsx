@@ -1,62 +1,30 @@
+import "./Footer.css";
+
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "#1F2322",
-        color: "#FDFBF6",
-        padding: "4rem 0 2rem",
-        fontFamily: "var(--font-sans)",
-      }}
-    >
-      <div
-        className="container"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "2.5rem",
-            marginBottom: "1.5rem",
-            color: "#F9EBE0",
-          }}
-        >
+    <footer className="site-footer">
+      <div className="container site-footer-shell">
+        <h2 className="site-footer-title">
           Ready to optimize your career?
         </h2>
-        <p
-          style={{ color: "#A0A6A4", marginBottom: "3rem", maxWidth: "500px" }}
-        >
+        <p className="site-footer-subtitle">
           Join thousands of professionals who have accelerated their job search
           using SkillSync's AI matching engine.
         </p>
 
-        <div style={{ display: "flex", gap: "2rem", marginBottom: "4rem" }}>
-          <a href="#" style={{ color: "#fff", fontSize: "0.9rem" }}>
+        <div className="site-footer-links">
+          <a href="#">
             Features
           </a>
-          <a href="#" style={{ color: "#fff", fontSize: "0.9rem" }}>
+          <a href="#">
             Contact
           </a>
-          <a href="#" style={{ color: "#fff", fontSize: "0.9rem" }}>
+          <a href="#">
             Privacy
           </a>
         </div>
 
-        <div
-          style={{
-            width: "100%",
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            paddingTop: "2rem",
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: "0.8rem",
-            color: "#A0A6A4",
-          }}
-        >
+        <div className="site-footer-bottom">
           <span>© 2026 SkillSync Inc. All rights reserved.</span>
           <span>Designed for professionals.</span>
         </div>

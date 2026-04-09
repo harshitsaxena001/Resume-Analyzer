@@ -27,6 +27,19 @@ const topSkillCounts = (items: string[], limit = 8): SkillCount[] => {
     .slice(0, limit);
 };
 
+const pickLatestResume = (
+  resumes: ResumeUploadResponse[],
+): ResumeUploadResponse | null => {
+  if (!resumes.length) return null;
+
+  return [...resumes].sort((a, b) => {
+    const aTime = new Date(a.uploaded_at).getTime();
+    const bTime = new Date(b.uploaded_at).getTime();
+    if (aTime !== bTime) return bTime - aTime;
+    return b.resume_id - a.resume_id;
+  })[0];
+};
+
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
   const [jobs, setJobs] = useState<JobResponse[]>([]);
@@ -58,10 +71,7 @@ const Dashboard = () => {
         ]);
         setJobs(jobData);
         setRecommendations(recData);
-        // Get the latest resume
-        if (resumeData.length > 0) {
-          setLatestResume(resumeData[0]);
-        }
+        setLatestResume(pickLatestResume(resumeData));
       } catch (err: any) {
         const detail = err?.response?.data?.detail;
         setError(detail || "Unable to load dashboard insights right now.");

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
@@ -8,6 +9,9 @@ interface NavbarProps {
 
 export default function Navbar({ onOpenAuth }: NavbarProps) {
   const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleNavItemClick = () => setMenuOpen(false);
 
   return (
     <nav className="site-navbar">
@@ -30,35 +34,69 @@ export default function Navbar({ onOpenAuth }: NavbarProps) {
             </svg>
             <span className="logo-text">SkillSync</span>
           </a>
+          <button
+            type="button"
+            className={`nav-toggle ${menuOpen ? "is-open" : ""}`}
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-main-nav"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
 
-        <div className="nav-center">
-          {user && <Link to="/dashboard">Dashboard</Link>}
-          <Link to="/jobs">Explore Jobs</Link>
-          <a href="/#how-it-works">How it works</a>
-          <a href="/#features">Features</a>
+        <div id="mobile-main-nav" className={`nav-center ${menuOpen ? "is-open" : ""}`}>
+          {user && (
+            <Link to="/dashboard" onClick={handleNavItemClick}>
+              Dashboard
+            </Link>
+          )}
+          <Link to="/jobs" onClick={handleNavItemClick}>
+            Explore Jobs
+          </Link>
+          <a href="/#how-it-works" onClick={handleNavItemClick}>
+            How it works
+          </a>
+          <a href="/#features" onClick={handleNavItemClick}>
+            Features
+          </a>
         </div>
 
-        <div className="nav-right">
+        <div className={`nav-right ${menuOpen ? "is-open" : ""}`}>
           {user ? (
             <div className="user-controls">
               <span className="user-name">
                 Hello, {user.full_name.split(" ")[0]}
               </span>
-              <button onClick={logout} className="nav-text-btn">
+              <button
+                onClick={() => {
+                  logout();
+                  handleNavItemClick();
+                }}
+                className="nav-text-btn"
+              >
                 Log out
               </button>
             </div>
           ) : (
             <div className="auth-controls">
               <button
-                onClick={() => onOpenAuth("login")}
+                onClick={() => {
+                  onOpenAuth("login");
+                  handleNavItemClick();
+                }}
                 className="nav-text-btn"
               >
                 Log in
               </button>
               <button
-                onClick={() => onOpenAuth("register")}
+                onClick={() => {
+                  onOpenAuth("register");
+                  handleNavItemClick();
+                }}
                 className="btn-pill btn-teal"
               >
                 Start analyzing

@@ -169,12 +169,15 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1rem;
 }
 
 .apply-modal {
   padding: 2rem;
   width: 100%;
   max-width: 520px;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .apply-modal h2 {
@@ -293,12 +296,28 @@
 
 @media (max-width: 640px) {
   .job-details-container {
+    padding-top: 76px;
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
   .jd-title {
-    font-size: 2rem;
+    font-size: clamp(1.55rem, 8vw, 2rem);
+  }
+
+  .job-hero-topline {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .jd-meta-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .jd-actions .btn-pill {
+    width: 100%;
+    justify-content: center;
   }
 
   .job-hero-card,
@@ -307,5 +326,13 @@
   .jd-skills-card,
   .apply-modal {
     padding: 1.2rem;
+  }
+
+  .apply-actions {
+    flex-direction: column-reverse;
+  }
+
+  .apply-actions .btn-pill {
+    width: 100%;
   }
 }
