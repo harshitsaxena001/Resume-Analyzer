@@ -5,7 +5,7 @@ import { uploadResume, type ResumeUploadResponse } from "../api/resume";
 import "./Hero.css";
 
 export default function Hero() {
-  const { user } = useAuth();
+  const { token, isLoading } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -26,7 +26,11 @@ export default function Hero() {
   };
 
   const handleUploadClick = () => {
-    if (!user) {
+    if (isLoading) {
+      return;
+    }
+
+    if (!token) {
       alert("Please log in to upload your resume.");
       return;
     }
@@ -80,9 +84,13 @@ export default function Hero() {
             <button
               onClick={handleUploadClick}
               className="btn-pill btn-teal"
-              disabled={uploading}
+              disabled={uploading || isLoading}
             >
-              {uploading ? "Analyzing..." : "Analyze Resume"}
+              {uploading
+                ? "Analyzing..."
+                : isLoading
+                  ? "Checking session..."
+                  : "Analyze Resume"}
             </button>
           </div>
 
