@@ -90,7 +90,8 @@ const Dashboard = () => {
   }, [recommendations]);
 
   const resumeUpgradeSuggestions = useMemo(() => {
-    const suggestions = latestResume?.parsed_json?.resume_upgrade_suggestions || [];
+    const suggestions =
+      latestResume?.parsed_json?.resume_upgrade_suggestions || [];
     if (!Array.isArray(suggestions)) return [];
     return suggestions
       .map((item) => item?.trim())
