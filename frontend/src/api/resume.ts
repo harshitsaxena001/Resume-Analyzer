@@ -10,6 +10,7 @@ export interface ResumeParsedData {
   skills: string[];
   certifications: string[];
   overall_score: number;
+  resume_upgrade_suggestions?: string[];
 }
 
 export interface ResumeUploadResponse {

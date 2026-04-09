@@ -115,6 +115,13 @@
   border-color: rgba(231, 76, 60, 0.2);
 }
 
+.skill-list.upgrades li {
+  justify-content: flex-start;
+  border-radius: 12px;
+  background: #f3fbf7;
+  border-color: rgba(15, 134, 97, 0.2);
+}
+
 .dashboard-your-skills {
   margin-bottom: 1.5rem;
 }

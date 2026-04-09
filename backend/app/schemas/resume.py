@@ -18,6 +18,7 @@ class ResumeParsedData(BaseModel):
     work_experience: List[WorkExperience]
     certifications: List[str]
     overall_score: float
+    resume_upgrade_suggestions: List[str] = []
 
 class ResumeResponse(BaseModel):
     resume_id: int

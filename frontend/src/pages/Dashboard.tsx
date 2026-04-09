@@ -89,6 +89,14 @@ const Dashboard = () => {
     return topSkillCounts(allMissing, 10);
   }, [recommendations]);
 
+  const resumeUpgradeSuggestions = useMemo(() => {
+    const suggestions = latestResume?.parsed_json?.resume_upgrade_suggestions || [];
+    if (!Array.isArray(suggestions)) return [];
+    return suggestions
+      .map((item) => item?.trim())
+      .filter((item): item is string => Boolean(item));
+  }, [latestResume]);
+
   if (isLoading || loading) {
     return (
       <div className="dashboard-shell">
@@ -192,8 +200,16 @@ const Dashboard = () => {
           </article>
 
           <article className="dashboard-card">
-            <h3>Skills You Are Missing</h3>
-            {missingSkills.length === 0 ? (
+            <h3>Resume Upgrade Suggestions</h3>
+            {resumeUpgradeSuggestions.length > 0 ? (
+              <ul className="skill-list upgrades">
+                {resumeUpgradeSuggestions.map((suggestion, index) => (
+                  <li key={`${suggestion}-${index}`}>
+                    <span>{suggestion}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : missingSkills.length === 0 ? (
               <p className="muted">
                 Great! No major skill gaps found, or upload a resume to get
                 personalized analysis.
@@ -202,8 +218,10 @@ const Dashboard = () => {
               <ul className="skill-list missing">
                 {missingSkills.map((item) => (
                   <li key={item.skill}>
-                    <span>{item.skill}</span>
-                    <strong>{item.count}</strong>
+                    <span>
+                      Add evidence for {item.skill} in projects and experience
+                      bullets
+                    </span>
                   </li>
                 ))}
               </ul>
