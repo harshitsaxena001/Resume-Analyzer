@@ -38,7 +38,9 @@ export default function Navbar({ onOpenAuth }: NavbarProps) {
             type="button"
             className={`nav-toggle ${menuOpen ? "is-open" : ""}`}
             onClick={() => setMenuOpen((prev) => !prev)}
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              menuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             aria-expanded={menuOpen}
             aria-controls="mobile-main-nav"
           >
@@ -48,7 +50,10 @@ export default function Navbar({ onOpenAuth }: NavbarProps) {
           </button>
         </div>
 
-        <div id="mobile-main-nav" className={`nav-center ${menuOpen ? "is-open" : ""}`}>
+        <div
+          id="mobile-main-nav"
+          className={`nav-center ${menuOpen ? "is-open" : ""}`}
+        >
           {user && (
             <Link to="/dashboard" onClick={handleNavItemClick}>
               Dashboard

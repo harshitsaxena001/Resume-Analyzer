@@ -107,7 +107,9 @@
   height: 2px;
   border-radius: 2px;
   background: var(--text-main);
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .nav-toggle.is-open span:nth-child(1) {

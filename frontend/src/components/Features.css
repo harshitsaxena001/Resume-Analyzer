@@ -103,9 +103,15 @@
   box-shadow: 6px 6px 0 var(--text-main);
 }
 
-.bg-mint { background-color: var(--bg-mint); }
-.bg-peach { background-color: var(--bg-peach); }
-.bg-cream-darker { background-color: #F4F1E9; }
+.bg-mint {
+  background-color: var(--bg-mint);
+}
+.bg-peach {
+  background-color: var(--bg-peach);
+}
+.bg-cream-darker {
+  background-color: #f4f1e9;
+}
 
 .sketch-icon {
   width: 80px;
